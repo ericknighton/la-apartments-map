@@ -17,6 +17,9 @@
        font-size:12px;font-weight:700;border:2px solid #ffd600;box-shadow:0 1px 4px rgba(0,0,0,.5);transform:translate(-50%,-50%)}
   .ref b{color:#ffd600;font-size:14px}
   .leaflet-div-icon{background:none;border:none}
+  .sc{width:22px;height:22px;border-radius:50%;background:#111;border:2px solid #ffd600;box-shadow:0 1px 4px rgba(0,0,0,.5);
+      display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;transform:translate(-50%,-50%);cursor:pointer}
+  .sc.planned{background:#666;border-style:dashed;opacity:.85}
   .pop h3{margin:0 0 2px;font-size:15px}
   .pop .addr{color:#555;font-size:12px;margin-bottom:6px}
   .pop .price{font-size:16px;font-weight:700;margin-bottom:4px}
@@ -42,6 +45,7 @@ const LISTINGS = [{"name": "Lincoln Place", "address": "1050 Frederick St, Venic
 const REFS = [{"label": "Roxbury", "full": "Her work: 450 N Roxbury Dr, Beverly Hills, CA 90210", "lat": 34.068403, "lon": -118.4067524}, {"label": "VNY", "full": "His work: 7155 Valjean Ave, Van Nuys, CA 91406", "lat": 34.2006531, "lon": -118.4873034}];
 const LIVE_SCORES = {"0": 7, "1": 16, "2": 7, "3": 6, "4": 5};
 const REMOVED_N = 9;
+const SUPERCHARGERS = [{"name": "Santa Monica, CA - Santa Monica Place", "status": "OPEN", "address": "395 Santa Monica Place, Santa Monica, CA 90401", "lat": 34.014693, "lon": -118.493679, "stalls": 16, "kw": 72, "facility": null, "opened": "2019-02-19", "otherEVs": false, "source": "https://supercharge.info/map?siteID=1635"}, {"name": "Santa Monica, CA", "status": "OPEN", "address": "1401 Santa Monica Blvd, Santa Monica, CA 90404", "lat": 34.024585, "lon": -118.485771, "stalls": 62, "kw": 250, "facility": null, "opened": "2022-02-18", "otherEVs": true, "source": "https://supercharge.info/map?siteID=1534"}, {"name": "Santa Monica, CA - Cloverfield Blvd", "status": "OPEN", "address": "1819 Cloverfield Blvd, Santa Monica, CA 90404", "lat": 34.025098, "lon": -118.469543, "stalls": 16, "kw": 250, "facility": null, "opened": "2022-10-21", "otherEVs": false, "source": "https://supercharge.info/map?siteID=3540"}, {"name": "Marina Del Rey, CA", "status": "OPEN", "address": "13534 Bali Way, Marina Del Rey, CA 90292", "lat": 33.980394, "lon": -118.445237, "stalls": 8, "kw": 250, "facility": null, "opened": "2022-07-28", "otherEVs": true, "source": "https://supercharge.info/map?siteID=2444"}, {"name": "Los Angeles, CA - W Olympic Blvd", "status": "OPEN", "address": "11355 W Olympic Blvd, Los Angeles, CA 90064", "lat": 34.03818, "lon": -118.443301, "stalls": 16, "kw": 250, "facility": null, "opened": "2022-11-19", "otherEVs": false, "source": "https://supercharge.info/map?siteID=3908"}, {"name": "Marina Del Rey, CA - Admiralty Way (Pier 44)", "status": "OPEN", "address": "4637 Admiralty Way, Marina Del Rey, CA 90292", "lat": 33.981262, "lon": -118.4414, "stalls": 10, "kw": 250, "facility": null, "opened": "2024-07-14", "otherEVs": true, "source": "https://supercharge.info/map?siteID=5987"}, {"name": "Culver City, CA - 11924 Washington Blvd", "status": "OPEN", "address": "11924 Washington Blvd, Los Angeles, CA 90066", "lat": 33.997487, "lon": -118.421155, "stalls": 8, "kw": 250, "facility": null, "opened": "2022-02-17", "otherEVs": false, "source": "https://supercharge.info/map?siteID=3574"}, {"name": "Playa Vista, CA - W Jefferson Blvd", "status": "OPEN", "address": "12746 W Jefferson Blvd, Playa Vista, CA 90094", "lat": 33.977104, "lon": -118.417167, "stalls": 14, "kw": 72, "facility": null, "opened": "2020-11-06", "otherEVs": false, "source": "https://supercharge.info/map?siteID=2483"}, {"name": "Los Angeles, CA - Venice Blvd", "status": "OPEN", "address": "8985 Venice Blvd, Los Angeles, CA 90034", "lat": 34.027977, "lon": -118.394133, "stalls": 44, "kw": 250, "facility": "Venice Crossroads", "opened": "2023-03-09", "otherEVs": true, "source": "https://supercharge.info/map?siteID=3242"}, {"name": "Culver City, CA", "status": "OPEN", "address": "6000 Hannum Ave, Culver City, CA 90230", "lat": 33.986779, "lon": -118.390213, "stalls": 16, "kw": 150, "facility": null, "opened": "2014-12-18", "otherEVs": false, "source": "https://supercharge.info/map?siteID=417"}, {"name": "Culver City, CA - Washington Blvd", "status": "OPEN", "address": "8850 Washington Blvd, Culver City, CA 90232", "lat": 34.026797, "lon": -118.388059, "stalls": 8, "kw": 250, "facility": "The Platform", "opened": "2021-11-23", "otherEVs": false, "source": "https://supercharge.info/map?siteID=3573"}, {"name": "West Hollywood, CA", "status": "OPEN", "address": "8775 Sunset Blvd, West Hollywood, CA 90069", "lat": 34.091601, "lon": -118.382258, "stalls": 8, "kw": 250, "facility": "Sunset Lot", "opened": "2022-09-02", "otherEVs": false, "source": "https://supercharge.info/map?siteID=3302"}, {"name": "Culver City, CA - Jefferson Blvd", "status": "PLAN", "address": "10814 Jefferson Blvd, Culver City, CA 90230", "lat": 34.000279, "lon": -118.394702, "stalls": 24, "kw": 500, "facility": null, "opened": null, "otherEVs": true, "source": "https://supercharge.info/map?siteID=11238"}, {"name": "Los Angeles, CA - N La Cienega Blvd", "status": "PERMIT", "address": "100 N La Cienega Blvd, Los Angeles, CA 90048", "lat": 34.074096, "lon": -118.37529, "stalls": 48, "kw": 250, "facility": null, "opened": null, "otherEVs": true, "source": "https://supercharge.info/map?siteID=6456"}, {"name": "Culver City, CA - La Cienega Blvd", "status": "PLAN", "address": "2901 La Cienega Blvd, Culver City, CA 90232", "lat": 34.032089, "lon": -118.374324, "stalls": 0, "kw": 500, "facility": null, "opened": null, "otherEVs": true, "source": "https://supercharge.info/map?siteID=12310"}, {"name": "Los Angeles, CA - Wilshire Blvd", "status": "PERMIT", "address": "6060 Wilshire Blvd, Los Angeles, CA 90036", "lat": 34.061605, "lon": -118.361178, "stalls": 8, "kw": 325, "facility": "Petersen Automotive Museum", "opened": null, "otherEVs": true, "source": "https://supercharge.info/map?siteID=7327"}];
 const SCORE_COLORS = {4:'#93C47D',3:'#6FA8DC',2:'#FFD966',1:'#E06666',0:'#D9D9D9'};
 const SCORE_LABELS = {4:'4 of 4',3:'3 of 4',2:'2 of 4',1:'1 of 4',0:'0 of 4'};
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -97,6 +101,32 @@ REFS.forEach(r => {
 bounds.push([REFS[0].lat, REFS[0].lon]);
 map.fitBounds(bounds, {padding: window.innerWidth < 600 ? [45,45] : [30,30]});
 
+const STATUS_LABEL = {OPEN:'Open', CONSTRUCTION:'Under construction', PERMIT:'Planned (permit filed)', PLAN:'Planned'};
+const scOpen = L.layerGroup(), scPlanned = L.layerGroup();
+SUPERCHARGERS.forEach(s => {
+  const open = s.status === 'OPEN';
+  const icon = L.divIcon({className:'', html:`<div class="sc${open?'':' planned'}">&#9889;&#xFE0F;</div>`, iconSize:[0,0], iconAnchor:[0,0], popupAnchor:[0,-12]});
+  const dir = `https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}`;
+  const rows = [
+    ['Status', STATUS_LABEL[s.status] || s.status],
+    ['Stalls', s.stalls || 'Not listed'],
+    ['Max power', s.kw ? s.kw + ' kW' : 'Not listed'],
+    ['Location', s.facility || ''],
+    ['Non-Tesla EVs', s.otherEVs ? 'Yes' : '']
+  ].filter(r => r[1] !== '' && r[1] != null).map(([k,v]) => `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('');
+  const html = `<div class="pop"><h3>&#9889; ${esc(s.name)}</h3><div class="addr">${esc(s.address)}</div>
+      <table>${rows}</table>
+      <a class="btn" href="${esc(dir)}" target="_blank" rel="noopener noreferrer">Directions &#8599;</a></div>`;
+  L.marker([s.lat, s.lon], {icon, zIndexOffset: open ? 50 : 20, title: s.name})
+    .bindPopup(html, {maxWidth: Math.min(280, window.innerWidth - 50), autoPanPadding:[15,15]})
+    .addTo(open ? scOpen : scPlanned);
+});
+scOpen.addTo(map);
+const nOpen = SUPERCHARGERS.filter(s => s.status === 'OPEN').length;
+const overlays = {[`&#9889; Tesla Superchargers (${nOpen})`]: scOpen};
+if (SUPERCHARGERS.length > nOpen) overlays[`&#9889; Planned Superchargers (${SUPERCHARGERS.length - nOpen})`] = scPlanned;
+L.control.layers(null, overlays, {position:'topright', collapsed:false}).addTo(map);
+
 const legend = L.control({position:'bottomleft'});
 legend.onAdd = () => {
   const el = L.DomUtil.create('div','legend');
@@ -108,6 +138,7 @@ legend.onAdd = () => {
   });
   lines += `<div><span class="sw" style="background:#6b6b6b"></span>Off the market (${REMOVED_N})</div>`;
   lines += `<div><span style="color:#1a237e;font-weight:700">&#9733;</span> Work: Roxbury, VNY</div>`;
+  if (SUPERCHARGERS.length) lines += `<div><span class="sc" style="display:inline-flex;transform:none;width:14px;height:14px;font-size:9px;border-width:1px;vertical-align:-3px;margin-right:4px">&#9889;</span>Tesla Supercharger</div>`;
   lines += `<div style="color:#666">Tap a price for details</div>`;
   el.innerHTML = lines;
   L.DomEvent.disableClickPropagation(el);
